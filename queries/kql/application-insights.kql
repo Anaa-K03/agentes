@@ -1,0 +1,35 @@
+// Contexto: Logs abierto desde el recurso Application Insights.
+// Revisado documentalmente; NO ejecutado en el tenant del evento.
+// Ejecutar cada bloque por separado. Ventana inicial: 30 minutos.
+
+// K1. Solicitudes fallidas agrupadas. count() cuenta registros, no corrige muestreo.
+requests
+| where timestamp > ago(30m) and success == false
+| summarize total = count() by name, resultCode
+| order by total desc
+
+// K2. Excepciones por tipo/mensaje. Depurar mensajes antes de compartir.
+exceptions
+| where timestamp > ago(30m)
+| summarize total = count() by type, outerMessage
+| order by total desc
+
+// K3. Warnings y errores de aplicación.
+traces
+| where timestamp > ago(30m) and severityLevel >= 2
+| project timestamp, severityLevel, message, operation_Id
+| order by timestamp desc
+| take 100
+
+// K4. Fallos y latencia de dependencias (milisegundos en este esquema).
+dependencies
+| where timestamp > ago(30m)
+| summarize fallos = countif(success == false), p95_ms = percentile(duration, 95) by target
+| order by fallos desc
+
+// K5. Correlación. Sustituir solo por operation_Id observado, no x-ms-request-id supuesto.
+union withsource=tabla requests, dependencies, exceptions, traces
+| where timestamp > ago(30m)
+| where operation_Id == "REEMPLAZAR_OPERATION_ID"
+| project timestamp, tabla, operation_Id, name, resultCode, type, message, outerMessage
+| order by timestamp asc

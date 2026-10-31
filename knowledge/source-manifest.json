@@ -1,0 +1,40 @@
+{
+  "review_date_panama": "2026-10-30",
+  "sources": [
+    {
+      "filename": "Capsulas Informativas - Microsoft.pdf",
+      "sha256": "04d1108c2779225ef4a0b2d12e4c978d83323eee75c37fb86e5cf219e00d576d",
+      "included_full_text": false
+    },
+    {
+      "filename": "Charla 2 - Operacion Bajo Presion - Microsoft.pdf",
+      "sha256": "7c4109765cbc3fb11a65f5722d8a71ef9e317786527622d6ab56d166d96a202b",
+      "included_full_text": false
+    },
+    {
+      "filename": "Conceptos Clave de Observabilidad en Dynatrace.pdf",
+      "sha256": "a2f41c9305da156cd05faaccc1e9c5b9b73c1b28a9ac6d5b783f0a6edcc54510",
+      "included_full_text": false
+    },
+    {
+      "filename": "copa-hackathon-agent-kit.zip",
+      "sha256": "eeccd2476e3f5257f3321c4a705585db50497b7905c217af86b85eae3e98f061",
+      "included_full_text": false
+    },
+    {
+      "filename": "Copa.pdf",
+      "sha256": "2d4c62129d98cd6051a33382cd0c4e95cbd240d29394fb2a7e5d0a4a5cc1ef22",
+      "included_full_text": false
+    },
+    {
+      "filename": "Guia del Estudiante - Dynatrace.pdf",
+      "sha256": "bcd947191e9e04f9bb8a03e8004b8c91a9b6f5bd6127a36f928f0f4c439a1538",
+      "included_full_text": false
+    },
+    {
+      "filename": "Sesion 1 - Observabilidad Inteligente con Dynatrace.pdf",
+      "sha256": "dcf919091b92f45f4947005ee6bab2e6aa478b849d8426636a6b35467d06ca6c",
+      "included_full_text": false
+    }
+  ]
+}

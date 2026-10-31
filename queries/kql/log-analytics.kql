@@ -1,0 +1,34 @@
+// Contexto: workspace Log Analytics con tablas App*. Ejecutar bloques separados.
+// Revisado documentalmente; NO ejecutado. No mezclar columnas con esquema requests.
+
+// W1. Fallos por operación/status. count() cuenta registros observados.
+AppRequests
+| where TimeGenerated > ago(30m) and Success == false
+| summarize total = count() by Name, ResultCode
+| order by total desc
+
+// W2. Excepciones del workspace.
+AppExceptions
+| where TimeGenerated > ago(30m)
+| summarize total = count() by ExceptionType, OuterMessage
+| order by total desc
+
+// W3. Logs de aplicación.
+AppTraces
+| where TimeGenerated > ago(30m) and SeverityLevel >= 2
+| project TimeGenerated, SeverityLevel, Message, OperationId
+| order by TimeGenerated desc
+| take 100
+
+// W4. Dependencias; DurationMs está en milisegundos.
+AppDependencies
+| where TimeGenerated > ago(30m)
+| summarize fallos = countif(Success == false), p95_ms = percentile(DurationMs, 95) by Target
+| order by fallos desc
+
+// W5. Reconstrucción de operación dentro del ámbito autorizado.
+union withsource=Tabla AppRequests, AppDependencies, AppExceptions, AppTraces
+| where TimeGenerated > ago(30m)
+| where OperationId == "REEMPLAZAR_OPERATION_ID"
+| project TimeGenerated, Tabla, OperationId, Name, ResultCode, ExceptionType, Message, OuterMessage
+| order by TimeGenerated asc

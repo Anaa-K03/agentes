@@ -1,0 +1,26 @@
+// D1. Inspección inicial: ejecutar este bloque solo, observar campos reales.
+fetch logs, from: -30m
+| sort timestamp desc
+| limit 20
+
+// D2. Errores recientes: comprobar que loglevel existe y su valor real.
+fetch logs, from: -30m
+| filter loglevel == "ERROR"
+| fields timestamp, content, loglevel
+| sort timestamp desc
+| limit 50
+
+// D3. Ejemplo del workshop adaptado: sustituir namespace real permitido.
+// Requiere ingestión de logs Kubernetes con ambos atributos.
+fetch logs, from: -1h
+| filter k8s.namespace.name == "REEMPLAZAR_NAMESPACE"
+| filter loglevel == "ERROR"
+| summarize errores = count(), by: {k8s.pod.name}
+| sort errores desc
+
+// D4. Correlación si los logs contienen trace.id. Sustituir por valor observado.
+fetch logs, from: -30m
+| filter trace.id == "REEMPLAZAR_TRACE_ID"
+| fields timestamp, content, trace.id
+| sort timestamp asc
+| limit 100
